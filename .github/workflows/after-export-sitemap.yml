@@ -1,0 +1,30 @@
+name: Generate sitemap after export
+
+on:
+  workflow_run:
+    workflows: [Trigger Cloudflare Pages Deploy]
+    types: [completed]
+
+jobs:
+  sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install
+        run: npm ci
+      - name: Generate sitemap
+        env:
+          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+          NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+        run: npm run postexport
+      - name: Upload sitemap artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sitemap
+          path: out/sitemap.xml

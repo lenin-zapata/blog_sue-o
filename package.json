@@ -1,0 +1,42 @@
+{
+  "name": "blog-sueno",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Blog sobre sueño infantil - Next.js + Sanity",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "export": "next build && next export",
+    "build:preview": "cross-env BUILD_PREVIEW=true next build && next export",
+    "postexport": "node scripts/generate-sitemap.js",
+    "start": "next start"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "sueño",
+    "infantil",
+    "blog"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@portabletext/react": "^6.0.0",
+    "@sanity/image-url": "^2.0.2",
+    "next": "^16.1.1",
+    "next-sanity": "^12.0.5",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^25.0.3",
+    "@types/react": "^19.2.7",
+    "autoprefixer": "^10.4.23",
+    "cross-env": "^10.1.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,14 @@
+# Node
+node_modules/
+
+# Environment
+.env.local
+.env.*.local
+
+# Next.js output
+.out/
+.next/
+
+# Editor
+.vscode/
+.DS_Store

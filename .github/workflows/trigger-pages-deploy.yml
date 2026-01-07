@@ -1,0 +1,17 @@
+name: Trigger Cloudflare Pages Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages Deploy Hook
+        run: |
+          if [ -z "$CF_DEPLOY_HOOK_URL" ]; then echo "CF_DEPLOY_HOOK_URL not set"; exit 1; fi
+          curl -X POST "$CF_DEPLOY_HOOK_URL"
+        env:
+          CF_DEPLOY_HOOK_URL: ${{ secrets.CF_DEPLOY_HOOK_URL }}

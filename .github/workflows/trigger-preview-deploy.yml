@@ -1,0 +1,17 @@
+name: Trigger Cloudflare Pages Preview Deploy
+
+on:
+  push:
+    branches:
+      - preview
+
+jobs:
+  deploy_preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages Preview Deploy Hook
+        run: |
+          if [ -z "$CF_PREVIEW_DEPLOY_HOOK_URL" ]; then echo "CF_PREVIEW_DEPLOY_HOOK_URL not set"; exit 1; fi
+          curl -X POST "$CF_PREVIEW_DEPLOY_HOOK_URL"
+        env:
+          CF_PREVIEW_DEPLOY_HOOK_URL: ${{ secrets.CF_PREVIEW_DEPLOY_HOOK_URL }}
