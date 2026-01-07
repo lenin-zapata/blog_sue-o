@@ -7,8 +7,10 @@ export function createSanityClient({ usePreview = false } = {}) {
   }
 
   return createClient({
-    projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-    dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+    // projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+    // dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+    projectId: 'sdejpl9x',
+    dataset: 'production',
     apiVersion: '2025-01-01',
     useCdn: true,
   });
