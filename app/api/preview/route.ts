@@ -10,6 +10,6 @@ export async function GET(req: Request) {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
-  draftMode().enable();
+  (await draftMode()).enable(); 
   return NextResponse.redirect(new URL(`/blog/${slug}`, req.url));
 }
