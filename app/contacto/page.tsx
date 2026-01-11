@@ -35,8 +35,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 font-semibold uppercase tracking-wider">Escríbeme</p>
-                    <a href="mailto:hola@tudominio.com" className="text-gray-800 font-medium hover:text-[#8E6E77] transition-colors">
-                      hola@tudominio.com
+                    <a href="mailto:anamariiajacomel@gmail.com" className="text-gray-800 font-medium hover:text-[#8E6E77] transition-colors">
+                      anamariiajacomel@gmail.com
                     </a>
                   </div>
                 </div>
@@ -48,8 +48,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 font-semibold uppercase tracking-wider">Sígueme</p>
-                    <a href="https://instagram.com" target="_blank" className="text-gray-800 font-medium hover:text-[#8E6E77] transition-colors">
-                      @tu_usuario_instagram
+                    <a href="https://tiktok.com" target="_blank" className="text-gray-800 font-medium hover:text-[#8E6E77] transition-colors">
+                      @anamariajacomel
                     </a>
                   </div>
                 </div>
