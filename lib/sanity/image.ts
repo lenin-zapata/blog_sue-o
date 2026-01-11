@@ -1,6 +1,10 @@
 import { createImageUrlBuilder } from '@sanity/image-url';
-import { client } from './client';
 
-const builder = createImageUrlBuilder(client as any);
+const builder = createImageUrlBuilder({
+  projectId: 'sdejpl9x', // <--- IMPORTANTE: Escrito a mano
+  dataset: 'production', // <--- IMPORTANTE: Escrito a mano
+});
 
-export const urlFor = (source: any) => builder.image(source);
+export const urlFor = (source: any) => {
+  return builder.image(source);
+};
