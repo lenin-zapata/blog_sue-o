@@ -17,13 +17,16 @@ const postQuery = `*[_type == "post" && slug.current == $slug][0]{
 
 // 2. ESTA ES LA CLAVE: Genera las rutas estáticas al momento de "construir"
 export async function generateStaticParams() {
-  // 1. Buscamos TODOS los slugs de los posts en Sanity
-  const query = `*[_type == "post"]{ "slug": slug.current }`;
-  const posts = await client.fetch(query);
+  // CONSULTA SEGURA:
+  // 1. defined(slug.current) -> Evita errores si un post no tiene slug
+  // 2. .slug.current -> Le dice a Sanity: "Dame SOLO el texto, no el objeto entero"
+  const query = `*[_type == "post" && defined(slug.current)].slug.current`;
+  
+  const slugs = await client.fetch(query);
 
-  // 2. Le devolvemos a Next.js una lista de los slugs para que cree las páginas
-  return posts.map((post: any) => ({
-    slug: post.slug,
+  // slugs será una lista simple de textos: ["mi-primer-post", "otro-post"]
+  return slugs.map((slug: string) => ({
+    slug: slug,
   }));
 }
 
