@@ -6,19 +6,16 @@ import { urlFor } from '../../../lib/sanity/image';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-// =================================================================
-// ESTA ES LA FUNCIÓN QUE CLOUDFLARE DICE QUE FALTA (NO LA BORRES)
-// =================================================================
-// --- VERSIÓN DE PRUEBA (SOLO PARA VERIFICAR QUE CLOUDFLARE FUNCIONA) ---
+// --- VERSIÓN REAL (YA FUNCIONARÁ PORQUE ARREGLAMOS EL CLIENTE) ---
 export async function generateStaticParams() {
-  // En lugar de llamar a client.fetch, devolvemos un slug manual
-  // Si esto funciona, confirmamos que el error es tu conexión con Sanity
-  return [
-    { slug: 'prueba-manual' }
-  ];
+  const query = `*[_type == "post" && defined(slug.current)].slug.current`;
+  const slugs = await client.fetch(query);
+
+  return slugs.map((slug: string) => ({
+    slug: slug,
+  }));
 }
-// -----------------------------------------------------------------------
-// =================================================================
+// ----------------------------------------------------------------
 
 // Metadatos para Google/Redes Sociales
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

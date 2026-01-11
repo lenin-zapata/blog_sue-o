@@ -1,19 +1,10 @@
 import { createClient } from 'next-sanity';
-import { previewClient as _previewClient } from './preview';
 
-export function createSanityClient({ usePreview = false } = {}) {
-  if (usePreview || process.env.BUILD_PREVIEW === 'true') {
-    return _previewClient;
-  }
+// Eliminamos la importación de './preview' porque causa errores en el build estático
 
-  return createClient({
-    // projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-    // dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
-    projectId: 'sdejpl9x',
-    dataset: 'production',
-    apiVersion: '2025-01-01',
-    useCdn: true,
-  });
-}
-
-export const client = createSanityClient();
+export const client = createClient({
+  projectId: 'sdejpl9x',
+  dataset: 'production',
+  apiVersion: '2025-01-01', // Puedes usar la fecha de hoy
+  useCdn: false, // false es mejor para que se actualice rápido cuando publicas
+});
