@@ -1,36 +1,30 @@
 import React from 'react';
 import { client } from '../../../lib/sanity/client';
-// Borramos previewClient y draftMode porque no funcionan en sitios estáticos gratuitos
 import { PortableText } from '@portabletext/react';
 import portableTextComponents from '../../../components/PortableTextComponents';
 import { urlFor } from '../../../lib/sanity/image';
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
-// 1. Query optimizada
-const postQuery = `*[_type == "post" && slug.current == $slug][0]{
-  title,
-  excerpt,
-  publishedAt,
-  mainImage,
-  body
-}`;
-
-// 2. ESTA ES LA CLAVE: Genera las rutas estáticas al momento de "construir"
+// 1. GENERACIÓN DE RUTAS ESTÁTICAS (Vital para Cloudflare)
 export async function generateStaticParams() {
-  // CONSULTA SEGURA:
-  // 1. defined(slug.current) -> Evita errores si un post no tiene slug
-  // 2. .slug.current -> Le dice a Sanity: "Dame SOLO el texto, no el objeto entero"
   const query = `*[_type == "post" && defined(slug.current)].slug.current`;
   
-  const slugs = await client.fetch(query);
-
-  // slugs será una lista simple de textos: ["mi-primer-post", "otro-post"]
-  return slugs.map((slug: string) => ({
-    slug: slug,
-  }));
+  try {
+    const slugs = await client.fetch(query);
+    console.log("✅ Slugs encontrados en Sanity:", slugs); // Esto saldrá en el log de Cloudflare
+    
+    // Convertimos la lista de textos ["post-1"] a objetos [{ slug: "post-1" }]
+    return slugs.map((slug: string) => ({
+      slug: slug,
+    }));
+  } catch (error) {
+    console.error("❌ Error conectando con Sanity:", error);
+    return []; // Si falla, devolvemos lista vacía para que no explote el build
+  }
 }
 
-// 3. Metadatos para SEO (Título y foto en Google/WhatsApp)
+// 2. METADATOS SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const post = await client.fetch(`*[_type=="post" && slug.current==$slug][0]{title, excerpt, mainImage}`, { slug });
@@ -41,42 +35,44 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       images: post?.mainImage ? [{ url: urlFor(post.mainImage).width(1200).url() }] : undefined,
     },
-  } as Metadata;
+  };
 }
 
-// 4. El componente de la página
+// 3. PÁGINA DEL POST (Next.js 16 requires params to be a Promise)
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
-  // Eliminamos la lógica de "preview". Usamos siempre el cliente normal.
-  const { slug } = await params;
+  const { slug } = await params; // <--- EL AWAIT ES OBLIGATORIO AHORA
   
-  const post = await client.fetch(postQuery, { slug });
+  const query = `*[_type == "post" && slug.current == $slug][0]{
+    title,
+    excerpt,
+    publishedAt,
+    mainImage,
+    body
+  }`;
 
-  // Diseño de "Página no encontrada" un poco más bonito
+  const post = await client.fetch(query, { slug });
+
   if (!post) {
-    return (
-      <div className="min-h-[50vh] flex flex-col items-center justify-center text-center px-4">
-        <h2 className="text-3xl font-serif text-[#8E6E77] mb-4">Post no encontrado</h2>
-        <p className="text-gray-600">Lo sentimos, este artículo no está disponible.</p>
-        <a href="/blog" className="mt-6 text-[#8E6E77] underline">Volver al Blog</a>
-      </div>
-    );
+    notFound(); // Esto muestra la página 404 oficial de Next.js
   }
 
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 md:py-20">
       <article className="prose prose-lg mx-auto prose-headings:font-serif prose-headings:text-[#8E6E77] prose-a:text-[#8E6E77]">
-        {/* Fecha (Opcional) */}
+        {/* Fecha */}
         {post.publishedAt && (
             <p className="text-sm text-gray-500 mb-4">
                 {new Date(post.publishedAt).toLocaleDateString('es-ES', { dateStyle: 'long' })}
             </p>
         )}
 
+        {/* Título */}
         <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-8 text-[#8E6E77] font-serif">
             {post.title}
         </h1>
 
-        {post.mainImage ? (
+        {/* Imagen Principal */}
+        {post.mainImage && (
           <div className="mb-10 rounded-2xl overflow-hidden shadow-lg">
              <img 
                 src={urlFor(post.mainImage).width(1200).height(600).url()} 
@@ -84,11 +80,20 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
                 className="w-full h-auto object-cover m-0" 
              />
           </div>
-        ) : null}
+        )}
 
-        {/* Aquí se renderiza el contenido, incluyendo tus tarjetas de Amazon */}
-        <PortableText value={post.body} components={portableTextComponents as any} />
+        {/* Contenido del Post */}
+        <div className="mt-8">
+            <PortableText value={post.body} components={portableTextComponents as any} />
+        </div>
       </article>
+      
+      {/* Botón Volver */}
+      <div className="mt-12 pt-8 border-t border-gray-100">
+        <a href="/blog" className="text-[#8E6E77] font-bold hover:underline">
+          ← Volver a todos los artículos
+        </a>
+      </div>
     </main>
   );
 }
