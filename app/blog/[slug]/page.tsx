@@ -9,17 +9,15 @@ import { notFound } from 'next/navigation';
 // =================================================================
 // ESTA ES LA FUNCIÓN QUE CLOUDFLARE DICE QUE FALTA (NO LA BORRES)
 // =================================================================
+// --- VERSIÓN DE PRUEBA (SOLO PARA VERIFICAR QUE CLOUDFLARE FUNCIONA) ---
 export async function generateStaticParams() {
-  const query = `*[_type == "post" && defined(slug.current)].slug.current`;
-  const slugs = await client.fetch(query);
-
-  // Si no hay posts, devolvemos un array vacío y no pasa nada
-  if (!slugs) return [];
-
-  return slugs.map((slug: string) => ({
-    slug: slug,
-  }));
+  // En lugar de llamar a client.fetch, devolvemos un slug manual
+  // Si esto funciona, confirmamos que el error es tu conexión con Sanity
+  return [
+    { slug: 'prueba-manual' }
+  ];
 }
+// -----------------------------------------------------------------------
 // =================================================================
 
 // Metadatos para Google/Redes Sociales
