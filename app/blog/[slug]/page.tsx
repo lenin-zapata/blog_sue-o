@@ -17,8 +17,14 @@ const postQuery = `*[_type == "post" && slug.current == $slug][0]{
 
 // 2. ESTA ES LA CLAVE: Genera las rutas estáticas al momento de "construir"
 export async function generateStaticParams() {
-  const slugs: string[] = await client.fetch(`*[_type == "post" && defined(slug.current)].slug.current`);
-  return slugs.map((slug) => ({ slug }));
+  // 1. Buscamos TODOS los slugs de los posts en Sanity
+  const query = `*[_type == "post"]{ "slug": slug.current }`;
+  const posts = await client.fetch(query);
+
+  // 2. Le devolvemos a Next.js una lista de los slugs para que cree las páginas
+  return posts.map((post: any) => ({
+    slug: post.slug,
+  }));
 }
 
 // 3. Metadatos para SEO (Título y foto en Google/WhatsApp)
