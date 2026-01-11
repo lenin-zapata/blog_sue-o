@@ -13,7 +13,7 @@ export default function ContactPage() {
             Hablemos
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-            ¿Tienes dudas sobre el sueño de tu bebé o quieres saber más sobre mis asesorías?
+            ¿Tienes dudas sobre el crecimiento de tu bebé o quieres saber más sobre mis asesorías?
             Estoy aquí para acompañarte en este proceso.
           </p>
         </div>

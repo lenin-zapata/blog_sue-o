@@ -7,8 +7,8 @@ const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-playfair' });
 
 export const metadata: Metadata = {
-  title: "Blog de Sueño Infantil",
-  description: "Consejos para el sueño de tu bebé",
+  title: "Blog de Crianza y Sueño Infantil | Creciendo con Amor",
+  description: "Consejos para la crianza y el sueño de tu bebé con amor y dedicación.",
 };
 
 export default function RootLayout({
@@ -29,7 +29,7 @@ export default function RootLayout({
         
         {/* Un footer sencillo */}
         <footer className="py-8 text-center text-sm text-gray-500 border-t border-gray-200 mt-12">
-          © {new Date().getFullYear()} Sueño Infantil
+          © {new Date().getFullYear()} Creciendo con Amor
         </footer>
       </body>
     </html>
