@@ -8,6 +8,14 @@ const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-playfair' });
 
 export const metadata: Metadata = {
+  // 1. ESTO ES LO NUEVO: Define tu dominio oficial
+  metadataBase: new URL('https://amoralcrecer.com'),
+  
+  // 2. ESTO ES LO NUEVO: Le dice a Google "Esta es la versión original"
+  alternates: {
+    canonical: '/',
+  },
+  
   title: "Blog de Crianza y Sueño Infantil | Creciendo con Amor",
   description: "Consejos para la crianza y el sueño de tu bebé con amor y dedicación.",
 };

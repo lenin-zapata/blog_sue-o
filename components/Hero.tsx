@@ -12,7 +12,7 @@ export default function Hero() {
         {/* Left column: Title, subtitle, CTA */}
         <div>
           <h1 className={`${playfair.className} text-4xl md:text-5xl font-semibold text-[#8E6E77]`}>Mi Blog</h1>
-          <p className={`${inter.className} mt-4 text-gray-700`}>Historias, consejos y recursos cálidos para acompañarte en el camino del sueño de tu bebé</p>
+          <p className={`${inter.className} mt-4 text-gray-700`}>Historias, consejos y recursos cálidos para acompañarte en el camino de crecimiento de tu bebé</p>
           <div className="mt-6">
             <Link
               href="/blog"

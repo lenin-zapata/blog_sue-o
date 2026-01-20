@@ -48,7 +48,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 font-semibold uppercase tracking-wider">Sígueme</p>
-                    <a href="https://tiktok.com" target="_blank" className="text-gray-800 font-medium hover:text-[#8E6E77] transition-colors">
+                    <a href="https://www.tiktok.com/@anamariajacomel" target="_blank" className="text-gray-800 font-medium hover:text-[#8E6E77] transition-colors">
                       @anamariajacomel
                     </a>
                   </div>
