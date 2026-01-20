@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next'
 import { client } from '@/lib/sanity/client'
 
+export const dynamic = 'force-static'
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://amoralcrecer.com'
 
